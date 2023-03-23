@@ -1,8 +1,12 @@
-import React from 'react'
+import React from 'react';
+import './App.css';
+import Homepage from './pages/homepage';
 
 function App() {
   return (
-    <div>This is a first component</div>
+    <div className='App'>
+      <Homepage/>
+    </div>
   )
 }
 
