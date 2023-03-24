@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import RecipeItem from '../../components/recipe-item';
 import Search from '../../components/search';
-
-const dummydata = 'dummydata';
+import './styles.css';
 
 const Homepage = () => {
     //loading state
@@ -37,12 +37,31 @@ const Homepage = () => {
 
     return (
         <div className='homepage'>
-            <Search getDataFromSearchComponent={getDataFromSearchComponent} dummydataCopy={dummydata} />
+            <Search getDataFromSearchComponent={getDataFromSearchComponent} />
+
+            {/* Show loading state */}
+            {
+                loadingState && <div className='loading'>Loading recipes ! Please waite. </div>
+            }
+            {/* Show loading state */}
+
+            {/* map through all the recipes */}
+            <div className='items'>
+                {
+                    recipes && recipes.length > 0
+                        ? recipes.map((item) => <RecipeItem item={item} />) : null
+                }
+            </div>
+            {/* map through all the recipes */}
         </div>
     )
 }
 
 export default Homepage;
+
+
+
+
 
 
 

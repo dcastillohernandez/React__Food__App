@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./styles.css";
 
 const Search = (props) => {
-    console.log(props)
+    // console.log(props)
     const {getDataFromSearchComponent} = props  
 
     const [inputValue, setInputValue] = useState('')
