@@ -1,12 +1,16 @@
-
+import './styles.css'
 
 const RecipeItem = (props) => {
 
-    console.log(props, 'recipe-items-props');
+    const { id, title, image, addToFavorites } = props;
 
     return (
-        <div className="items">
-            Recipe Item 
+        <div key={id} className="recipe-item">
+            <div>
+                <img src={image} alt="imagen of recipe" />
+            </div>
+            <p>{title}</p>
+            <button type='button' onClick={addToFavorites} >Add to favorites</button>
         </div>
     )
 }

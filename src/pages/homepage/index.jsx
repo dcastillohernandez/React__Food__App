@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import RecipeItem from '../../components/recipe-item';
+import { useEffect, useState } from 'react';
+import FavoriteItems from '../../components/favorite-item';
+import RecipeItem from '../../components/favorite-item';
 import Search from '../../components/search';
 import './styles.css';
 
@@ -10,11 +11,13 @@ const Homepage = () => {
     //save result that we receive from api
     const [recipes, setRecipes] = useState([]);
 
+    //favorite data state
+    const [favorites, setFavorites] = useState([]);
+
     const getDataFromSearchComponent = (getData) => {
 
         //keep the loading state as true before we are calling the api
         setLoadingState(true);
-        console.log(getData, 'getData');
 
         //Calling the Api 
         async function getReceipes() {
@@ -28,28 +31,72 @@ const Homepage = () => {
                 setLoadingState(false)
                 setRecipes(results)
             }
-            console.log(result);
+
         }
         getReceipes();
     }
 
-    console.log(loadingState, recipes, 'loadingState, recipes');
+    const addToFavorites = (getCurrentRecipeItem) => {
+
+        let cpyFavorites = [...favorites];
+
+        const index = cpyFavorites.findIndex(item => item.id === getCurrentRecipeItem.id)
+
+        if (index === -1) {
+            cpyFavorites.push(getCurrentRecipeItem)
+            setFavorites(cpyFavorites)
+            //save the favorite in local storage 
+            localStorage.setItem('favorites', JSON.stringify(cpyFavorites))
+        } else {
+            alert('Items is already present in favorites')
+        }
+    }
+
+    useEffect(() => {
+        const extractFavoritesFromLocalStorageOnPageLoad = JSON.parse(localStorage.getItem('favorites'));
+        setFavorites(extractFavoritesFromLocalStorageOnPageLoad)
+    }, [])
+
+    console.log(favorites);
 
     return (
         <div className='homepage'>
-            <Search getDataFromSearchComponent={getDataFromSearchComponent} />
+            <Search
+                getDataFromSearchComponent={getDataFromSearchComponent}
+            />
 
             {/* Show loading state */}
             {
                 loadingState && <div className='loading'>Loading recipes ! Please waite. </div>
             }
             {/* Show loading state */}
+            <div className='favorites-wrapper'>
+                <h1 className='favorites-title'>Favorites</h1>
+                <div className='favorites'></div>
+            </div>
+            {
+                favorites && favorites.length > 0 ?
+                    favorites.map(item => (
+                        <FavoriteItems
+                            id={item.id}
+                            image={item.image}
+                            title={item.title}
+                        />
+                    )) : null
+            }
+            {/* Show loading state */}
+            {/* Show loading state */}
 
             {/* map through all the recipes */}
             <div className='items'>
                 {
                     recipes && recipes.length > 0
-                        ? recipes.map((item) => <RecipeItem item={item} />) : null
+                        ? recipes.map((item) => <RecipeItem
+                            addToFavorites={() => addToFavorites(item)}
+                            id={item.id}
+                            image={item.image}
+                            item={item}
+                            title={item.title} />) : null
                 }
             </div>
             {/* map through all the recipes */}
@@ -58,6 +105,7 @@ const Homepage = () => {
 }
 
 export default Homepage;
+
 
 
 

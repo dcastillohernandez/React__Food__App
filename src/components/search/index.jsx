@@ -2,8 +2,8 @@ import { useState } from "react";
 import "./styles.css";
 
 const Search = (props) => {
-    // console.log(props)
-    const {getDataFromSearchComponent} = props  
+
+    const { getDataFromSearchComponent } = props
 
     const [inputValue, setInputValue] = useState('')
 
@@ -11,8 +11,6 @@ const Search = (props) => {
         const { value } = event.target;
         setInputValue(value)
     }
-
-    console.log(inputValue);
 
     const handleSubmit = (event) => {
         event.preventDefault();
